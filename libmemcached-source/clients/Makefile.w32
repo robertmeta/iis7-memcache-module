@@ -1,0 +1,32 @@
+CC=gcc
+SRCS = \
+	memcat.c \
+	memcp.c \
+	memerror.c \
+	memflush.c \
+	memrm.c \
+	memslap.c \
+	memstat.c
+
+HELPER_SRCS = \
+	generator.c \
+	execute.c \
+	utilities.c
+
+OBJS = $(SRCS:.c=.o)
+HELPER_OBJS = $(HELPER_SRCS:.c=.o)
+EXES = $(SRCS:.c=.exe)
+
+CFLAGS=-DWINVER=0x0501 -I.. -I..\libmemcached -g
+LDFLAGS=-L../libmemcached
+
+.SUFFIXES: .o .c .exe
+
+all : $(HELPER_OBJS) $(EXES)
+
+.c.o :
+	@gcc -c $(CFLAGS) $<
+
+.o.exe :
+	@echo linking $@
+	@gcc -o $@ $< $(HELPER_OBJS) $(LDFLAGS) -lmemcached -liberty -lpthread

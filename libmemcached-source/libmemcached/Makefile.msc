@@ -1,0 +1,51 @@
+CC=cl /nologo
+LINK=link /nologo
+SRCS = \
+	byteorder.c \
+	crc.c \
+	md5.c \
+	hsieh_hash.c \
+	jenkins_hash.c \
+	murmur_hash.c \
+	memcached.c \
+	memcached_auto.c \
+	memcached_behavior.c \
+	memcached_callback.c \
+	memcached_connect.c \
+	memcached_delete.c \
+	memcached_do.c \
+	memcached_fetch.c \
+	memcached_fetch_execute.c \
+	memcached_flush.c \
+	memcached_get.c \
+	memcached_hash.c \
+	memcached_hosts.c \
+	memcached_io.c \
+	memcached_key.c \
+	memcached_parse.c \
+	memcached_purge.c \
+	memcached_quit.c \
+	memcached_response.c \
+	memcached_result.c \
+	memcached_server.c \
+	memcached_stats.c \
+	memcached_storage.c \
+	memcached_strerror.c \
+	memcached_string.c \
+	memcached_verbosity.c \
+	memcached_version.c
+
+OBJS = $(SRCS:.c=.obj)
+
+CFLAGS=-DWINVER=0x0501 -I.. -I. -I..\visualc\toolset
+
+.SUFFIXES: .obj .c
+
+all : memcached.dll
+
+.c.obj :
+	@$(CC) -c $(CFLAGS) $<
+
+memcached.dll : $(OBJS)
+	$(LINK) /DLL /OUT:$@ /DEF:..\visualc\memcached.def $(OBJS) ws2_32.lib
+

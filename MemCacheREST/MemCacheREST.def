@@ -1,0 +1,4 @@
+LIBRARY	"TweakHeader"
+EXPORTS
+    RegisterModule
+
